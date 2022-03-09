@@ -1,0 +1,51 @@
+blueprint:
+  name: Close Garage Door After Specified Period
+  description: Automatically close an open garage door after it has been open for a set period.
+  domain: automation
+  input:
+    garage_door:
+      name: Garage Door
+      selector:
+        entity:
+          domain: cover
+            # hours:
+            #   name: hh
+            #   selector:
+            #     number:
+            #       min: 0
+            #       max: 23
+            #       unit_of_measurement: hours
+            # minutes:
+            #   name: mm
+            #   selector:
+            #     number:
+            #       min: 0
+            #       max: 59
+            #       unit_of_measurement: minutes
+            # seconds:
+            #   name: ss
+            #   selector:
+            #     number:
+            #       min: 0
+            #       max: 59
+            #       unit_of_measurement: seconds
+
+trigger:
+  platform: state
+  entity_id: !input garage_door
+  from: closed
+  to: open
+    #for:
+    #  hours: !input hours
+    #  minutes: !input minutes
+    #  seconds: !input seconds
+
+condition:
+  - condition: state
+    entity_id: !input garage_door
+    state: open
+
+action:
+  - domain: cover
+    entity_id: !input garage_door
+    type: close
